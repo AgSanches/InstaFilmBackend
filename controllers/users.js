@@ -31,9 +31,24 @@ const controller = {
     },
 
     getUser: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
-        });
+
+        const options = {
+            where: {
+                id: req.params.id
+            }
+        }
+
+        User.findOne(options).then(user => {
+            if(!user){
+                return res.status(404).json({
+                    message: "Usuario no existente."
+                })
+            }
+            return res.status(200).json(user);
+
+        }).catch(() =>
+            res.status(500).json({
+                message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." }))
     },
 
     getUserByName: (req, res) => {
