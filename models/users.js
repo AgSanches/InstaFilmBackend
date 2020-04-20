@@ -56,5 +56,3 @@ module.exports = (sequelize, type) => {
         }
     })
 }
-
-module.exports = User;
