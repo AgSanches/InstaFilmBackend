@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
+const UserModel = require('./models/users')
 
-const db = new Sequelize({
+const sequelize = new Sequelize({
     database: 'instafilm',
     username: '',
     password: '',
@@ -8,4 +9,13 @@ const db = new Sequelize({
     storage: './instafilm-db.sqlite',
 });
 
-module.exports = db;
+const User = UserModel(sequelize, Sequelize);
+
+sequelize.sync()
+    .then(() => {
+        console.log(`Database & tables created!`)
+    })
+
+module.exports = {
+    User
+}

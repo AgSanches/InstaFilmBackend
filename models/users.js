@@ -40,8 +40,7 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             defaultValue: 3, // 1 is Adm, 2 Teacher, 3 Student,
             validate: {
-                notEmpty: true,
-                isIn: [1, 2, 3]
+                notEmpty: true
             }
         },
         category: {
