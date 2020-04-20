@@ -14,8 +14,6 @@ const User = UserModel(sequelize, Sequelize);
 sequelize.sync()
     .then(() => {
         console.log(`Database & tables created!`)
-    })
+    });
 
-module.exports = {
-    User
-}
+module.exports = User

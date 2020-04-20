@@ -1,11 +1,33 @@
 'use strict'
 
+const User = require('../db');
+
 const controller = {
 
     getUsers: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
-        });
+
+        const options  = {
+            order: [
+                ['createdAt', "DESC"]
+            ]
+        }
+
+        if (req.params.limit){
+            options.limit = req.params.limit;
+        }
+
+        User.findAll(options)
+            .then( users => res.status(200).json(users))
+            .catch(error => {
+                if(error.original.errno === 20) {
+                    return res.status(400).json({
+                        message: "El parámetro limit proporcionado no es válido, el valor debe ser un número."
+                    });
+                }
+                return res.status(500).json({
+                    message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento."
+                })
+            })
     },
 
     getUser: (req, res) => {
