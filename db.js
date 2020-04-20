@@ -16,4 +16,7 @@ sequelize.sync()
         console.log(`Database & tables created!`)
     });
 
-module.exports = User
+module.exports = {
+    User,
+    Sequelize
+}

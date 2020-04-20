@@ -1,6 +1,6 @@
 'use strict'
 
-const User = require('../db');
+const {User, Sequelize} = require('../db');
 
 const controller = {
 
@@ -52,7 +52,23 @@ const controller = {
     },
 
     getUserByName: (req, res) => {
+        const search = `%${req.params.search}%`
+        const options = {
+            order: [
+                ['createdAt', "DESC"]
+            ],
+            where: {
+                name: {
+                    [Sequelize.Op.like]: search
+                }
+            }
+        }
 
+        User.findAll(options).then(user => {
+            return res.status(200).json(user);
+        }).catch(() =>
+            res.status(500).json({
+                message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." }))
     },
 
     createUser: (req, res) => {
