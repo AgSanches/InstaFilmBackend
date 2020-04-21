@@ -117,9 +117,28 @@ const controller = {
     },
 
     deleteUser: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
-        });
+        User.destroy({
+            where: {
+                id: req.params.id
+            }
+        })
+            .then((log) => {
+                if (log === 1){
+                    return res.status(202).json({
+                        message: "Usuario eliminado."
+                    })
+                } else {
+                    return res.status(404).json({
+                        message: "El usuario no existe."
+                    })
+                }
+
+            })
+            .catch(() => {
+                return res.status(500).json({
+                    message: "Ha ocurrido un error al eliminar al usuario, vuelva a intentarlo en otro momento"
+                })
+            });
     },
 
     uploadUserImage: (req, res) => {
