@@ -7,15 +7,15 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             validate: {
                 notEmpty: true,
-                isAlpha: true
+                is: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
             }
         },
-        lastname: {
+        lastName: {
             type: type.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true,
-                isAlpha: true
+                is: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
             }
         },
         email: {
@@ -40,7 +40,8 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             defaultValue: 3, // 1 is Adm, 2 Teacher, 3 Student,
             validate: {
-                notEmpty: true
+                notEmpty: true,
+                isIn: [[1,2,3]]
             }
         },
         category: {
@@ -50,7 +51,6 @@ module.exports = (sequelize, type) => {
         information: {
             type: type.STRING,
             validate: {
-                isAlpha: true
             }
         }
     })

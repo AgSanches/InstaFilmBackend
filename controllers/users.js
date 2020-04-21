@@ -2,6 +2,7 @@
 
 const {User, Sequelize} = require('../db');
 const validator = require('validator');
+const crypto = require('crypto')
 
 const controller = {
 
@@ -73,14 +74,21 @@ const controller = {
     },
 
     createUser: (req, res) => {
+        try {
+            req.body.password = crypto.createHash('md5').update(req.body.password).digest("hex");
+        } catch (e) {
+            return res.status(400).json({
+                message: "La contraseña no ha sido sumistrada."
+            })
+        }
 
-        User.create(req.body).then(user => {
-
+        User.create(req.body)
+            .then(user => {
             return res.status(201).json({
                 user:user
             });
-
-        }).catch(error => {
+        })
+            .catch(error => {
 
             if(!error.errno){
                 const errors = []
