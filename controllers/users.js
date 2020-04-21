@@ -1,6 +1,7 @@
 'use strict'
 
 const {User, Sequelize} = require('../db');
+const validator = require('validator');
 
 const controller = {
 
@@ -72,8 +73,32 @@ const controller = {
     },
 
     createUser: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
+
+        User.create(req.body).then(user => {
+
+            return res.status(201).json({
+                user:user
+            });
+
+        }).catch(error => {
+
+            if(!error.errno){
+                const errors = []
+
+                error.errors.forEach( userError => {
+                    errors.push(userError.path);
+                });
+
+                return res.status(400).json({
+                    message: "El usuario enviado no es válido, comprueba los campos",
+                    errors
+                })
+
+            }else {
+                return res.status(500).json({
+                    message: "Ha ocurrido un error al crear el usuario, vuelva a intentarlo en otro momento."
+                })
+            }
         });
     },
 
