@@ -1,8 +1,6 @@
 'use strict'
 
 const {User, Sequelize} = require('../db');
-const validator = require('validator');
-const crypto = require('crypto')
 
 const controller = {
 
@@ -74,14 +72,6 @@ const controller = {
     },
 
     createUser: (req, res) => {
-        try {
-            req.body.password = crypto.createHash('md5').update(req.body.password).digest("hex");
-        } catch (e) {
-            return res.status(400).json({
-                message: "La contraseña no ha sido sumistrada."
-            })
-        }
-
         User.create(req.body)
             .then(user => {
             return res.status(201).json({
@@ -111,9 +101,48 @@ const controller = {
     },
 
     updateUser: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
-        });
+
+        const options = {
+            where: {
+                id: req.params.id
+            }
+        }
+
+        User.update(req.body, options)
+            .then( result => {
+                if (result[0] === 0){
+                    return res.status(404).json({
+                        message: "El usuario suministrado no existe."
+                    })
+                }else {
+                    User.findOne(options).then(user => {
+                        return res.status(200).json({
+                            user
+                        })
+                    })
+                }
+            })
+            .catch(error => {
+
+                if(!error.errno){
+                    const errors = []
+
+                    error.errors.forEach( userError => {
+                        errors.push(userError.path);
+                    });
+
+                    return res.status(400).json({
+                        message: "El usuario enviado no es válido, comprueba los campos",
+                        errors
+                    })
+
+                }else {
+                    return res.status(500).json({
+                        message: "Ha ocurrido un error al crear el usuario, vuelva a intentarlo en otro momento."
+                    })
+                }
+
+            })
     },
 
     deleteUser: (req, res) => {
@@ -140,18 +169,6 @@ const controller = {
                 })
             });
     },
-
-    uploadUserImage: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
-        });
-    },
-
-    getUserImage: (req, res) => {
-        return res.status(200).send({
-            message: 'Not implemented.'
-        });
-    }
 }
 
 module.exports = controller;
