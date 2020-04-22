@@ -35,7 +35,7 @@ module.exports = (sequelize, type) => {
                 len: [6,100]
             }
         },
-        rol: {
+        role: {
             type: type.INTEGER,
             allowNull: false,
             defaultValue: 3, // 1 is Adm, 2 Teacher, 3 Student,
