@@ -7,6 +7,8 @@ const token_secret = "soniagithub";
 const createToken = function(user) {
     const payload = {
         sub: user.id,
+        email: user.email,
+        name: user.name,
         iat: moment().unix(),
         exp: moment().add(2, 'days').unix(),
         role: user.role
