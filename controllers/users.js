@@ -1,4 +1,5 @@
 'use strict'
+const bcrypt = require('bcrypt')
 
 const {User, Sequelize} = require('../db');
 
@@ -51,7 +52,15 @@ const controller = {
                 message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." }))
     },
 
-    createUser: (req, res) => {
+    register: (req, res) => {
+        const salt = bcrypt.genSaltSync(10);
+        if (!req.body.password){
+            return res.status(400).json({
+                message: "No se ha especificado una contraseña."
+            })
+        }
+        req.body.password = bcrypt.hashSync(req.body.password, salt)
+
         User.create(req.body)
             .then(user => {
             return res.status(201).json({
