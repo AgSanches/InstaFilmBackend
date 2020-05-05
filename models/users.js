@@ -38,19 +38,10 @@ module.exports = (sequelize, type) => {
         role: {
             type: type.INTEGER,
             allowNull: false,
-            defaultValue: 3, // 1 is Adm, 2 Teacher, 3 Student,
+            defaultValue: 3, // 1 Administrador, 2 Editor, 3 Usuario registrado
             validate: {
                 notEmpty: true,
                 isIn: [[1,2,3]]
-            }
-        },
-        category: {
-            type: type.STRING,
-            allowNull: false
-        },
-        information: {
-            type: type.STRING,
-            validate: {
             }
         }
     })
