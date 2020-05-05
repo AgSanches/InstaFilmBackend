@@ -1,7 +1,7 @@
 'use strict'
 
 const bcrypt = require('bcrypt');
-const jwtFunctions = require('../jwt')
+const jwtFunctions = require('../jwt');
 
 const {User, Sequelize} = require('../db');
 
@@ -56,11 +56,6 @@ const controller = {
 
     register: (req, res) => {
         const salt = bcrypt.genSaltSync(10);
-        if (!req.body.password){
-            return res.status(400).json({
-                message: "No se ha especificado una contraseña."
-            })
-        }
         req.body.password = bcrypt.hashSync(req.body.password, salt)
 
         User.create(req.body)
@@ -93,6 +88,8 @@ const controller = {
 
     login: (req, res) => {
 
+
+
         if (!req.body.email){
             return res.status(400).json({
                 message: "No se ha especificado un email."
@@ -103,6 +100,7 @@ const controller = {
                 message: "No se ha especificado una contraseña."
             })
         }
+
         const options = {
             where: {
                 email: req.body.email
