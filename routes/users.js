@@ -2,10 +2,11 @@
 
 const express = require('express');
 const UserController = require('../controllers/users');
+const jwtFunctions = require('../jwt')
 
 const router = express.Router();
 
-router.get('/users/:limit?', UserController.getUsers);
+router.get('/users/:limit?', jwtFunctions.checkAuthenticated, UserController.getUsers);
 router.get('/user/:id', UserController.getUser);
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);

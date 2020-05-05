@@ -1,7 +1,7 @@
 'use strict'
 
 const bcrypt = require('bcrypt');
-const createToken = require('../jwt')
+const jwtFunctions = require('../jwt')
 
 const {User, Sequelize} = require('../db');
 
@@ -117,7 +117,7 @@ const controller = {
                 })
             }
             if (bcrypt.compareSync(req.body.password, user.password)){
-                const token = createToken(user);
+                const token = jwtFunctions.createToken(user);
                 return res.status(200).json({access_token: token});
             }
             else {
@@ -126,7 +126,8 @@ const controller = {
                 })
             }
         })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 return res.status(500).json({message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." })
             });
     },

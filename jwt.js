@@ -15,7 +15,35 @@ const createToken = function(user) {
     return jwt.encode(payload, token_secret);
 }
 
-module.exports = createToken;
+const checkAuthenticated = function(req, res, next) {
+    if (!req.headers.authorization) {
+        return res.status(403).json({
+            message: "No se ha enviado el token."
+        });
+    }
 
+    const token = req.headers.authorization.split(" ")[1];
+    let payload;
 
+    try {
+        payload = jwt.decode(token, token_secret);
+    } catch (e) {
+        return res.status(401).json({
+            message: "Token no válido."
+        })
+     }
 
+    if (payload.exp <= moment().unix()){
+        return res.status(401).json({
+            message: "El token ha expirado."
+        })
+    }
+
+    req.user = payload.sub;
+    next();
+}
+
+module.exports = {
+    createToken: createToken,
+    checkAuthenticated: checkAuthenticated,
+}
