@@ -89,6 +89,46 @@ const controller = {
         });
     },
 
+    login: (req, res) => {
+
+        if (!req.body.email){
+            return res.status(400).json({
+                message: "No se ha especificado un email."
+            })
+        }
+
+        if (!req.body.password){
+            return res.status(400).json({
+                message: "No se ha especificado una contraseña."
+            })
+        }
+
+        const options = {
+            where: {
+                email: req.body.email
+            }
+        }
+
+        User.findOne(options).then(user => {
+
+            if(!user){
+                return res.status(404).json({
+                    message: "Usuario no existente."
+                })
+            }
+
+            if (bcrypt.compareSync(req.body.password, user.password)){
+                return res.status(200).json(user);
+            } else {
+                return res.status(401).json({
+                    message: "Credenciales no válidas."
+                })
+            }
+        }).catch(() =>
+            res.status(500).json({
+                message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." }))
+    },
+
     updateUser: (req, res) => {
 
         const options = {
