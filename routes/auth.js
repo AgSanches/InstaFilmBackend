@@ -9,7 +9,6 @@ const router = express.Router();
 router.post('/register', [
     check('name').not().isEmpty(),
     check('lastName').not().isEmpty(),
-    check('role').not().isEmpty(),
     check('email', "Email no válido").isEmail(),
     check('password', "Contraseña inválida").isLength({min: 6}),
     checkErrors,
