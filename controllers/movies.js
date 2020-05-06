@@ -55,7 +55,6 @@ const controller = {
             }))
     },
     createMovie: (req, res) => {
-
         Movie.create(req.body)
             .then(movie => {
                 return res.status(201).json({
@@ -88,14 +87,74 @@ const controller = {
             });
     },
     updateMovie: (req, res) => {
-        return res.status(200).json({
-            message: 'Not implemented'
-        })
+        const options = {
+            where: {
+                id: req.params.id
+            }
+        }
+        Movie.update({
+        title: req.body.title, releaseYear: req.body.releaseYear, director: req.body.director,
+        image_path: req.body.image_path, duration: req.body.duration, genre: req.body.genre,
+        synopsis: req.body.synopsis, cast: req.body.cast, trailer: req.body.trailer
+        }, options)
+            .then( result => {
+                if (result[0] === 0){
+                    return res.status(404).json({
+                        message: "La película suministrada no existe."
+                    })
+                }else {
+                    Movie.findOne(options).then(movie => {
+                        return res.status(200).json({
+                            movie
+                        })
+                    })
+                }
+            })
+            .catch(error => {
+
+                if(!error.errno){
+                    const errors = []
+
+                    error.errors.forEach( userError => {
+                        errors.push(userError.path);
+                    });
+
+                    return res.status(400).json({
+                        message: "La película enviada no es válida, comprueba los campos",
+                        errors
+                    })
+
+                }else {
+                    return res.status(500).json({
+                        message: "Ha ocurrido un error al actualizar la película vuelva a intentarlo en otro momento."
+                    })
+                }
+
+            })
     },
     deleteMovie: (req, res) => {
-        return res.status(200).json({
-            message: 'Not implemented'
+        Movie.destroy({
+            where: {
+                id: req.params.id
+            }
         })
+            .then((log) => {
+                if (log === 1){
+                    return res.status(200).json({
+                        message: "Película eliminada."
+                    })
+                } else {
+                    return res.status(404).json({
+                        message: "La película no existe."
+                    })
+                }
+
+            })
+            .catch(() => {
+                return res.status(500).json({
+                    message: "Ha ocurrido un error al eliminar la pelicula, vuelva a intentarlo en otro momento"
+                })
+            });
     }
 }
 
