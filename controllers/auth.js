@@ -62,18 +62,13 @@ const controller = {
 
         User.findOne(options)
             .then(user => {
-                if(!user){
-                    return res.status(404).json({
-                        message: "Usuario no existente."
-                    })
-                }
-                if (bcrypt.compareSync(req.body.password, user.password)){
+                if (user && bcrypt.compareSync(req.body.password, user.password)){
                     const token = jwtFunctions.createToken(user);
                     return res.status(200).json({access_token: token});
                 }
                 else {
                     return res.status(401).json({
-                        message: "Credenciales no válidas."
+                        message: "Usuario no existente o contraseña no válida."
                     })
                 }
             })
