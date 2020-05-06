@@ -18,7 +18,9 @@ User.hasMany(Movie, {
     onUpdate: 'CASCADE'
 });
 
-Movie.belongsTo(User);
+Movie.belongsTo(User, {
+ constraints: false
+});
 
 sequelize.sync()
     .then(() => {
@@ -27,5 +29,6 @@ sequelize.sync()
 
 module.exports = {
     User,
+    Movie,
     Sequelize
 }
