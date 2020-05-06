@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelize, type) => {
-    return sequelize.define('users', {
+    return sequelize.define('movies', {
         title: {
             type: type.STRING,
             allowNull: false,
@@ -9,25 +9,50 @@ module.exports = (sequelize, type) => {
                 notEmpty: true
             }
         },
-        releaseDate: {
-            type: type.DATEONLY,
-            allowNull: true
+        releaseYear: {
+            type: type.INTEGER,
+            allowNull: false,
+            validate: {
+                min: 1888
+            }
         },
         director: {
             type: type.STRING,
-            allowNull: true
+            allowNull: false
         },
         image_path: {
             type: type.STRING,
-            allowNull: true
+            allowNull: true,
+            validate: {
+                is: '(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*(\\?.*)?'
+            }
         },
-        durantion: {
+        duration: {
             type: type.INTEGER,
-            allowNull: true
+            allowNull: false,
+            validate: {
+                min: 1
+            }
         },
         genre: {
             type: type.STRING,
-            allowNull: true
+            allowNull: false
+        },
+        synopsis: {
+            type: type.TEXT,
+            allowNull: false
+        },
+        cast: {
+            type: type.TEXT,
+            allowNull: false
+        },
+        trailer: {
+            type: type.TEXT,
+            allowNull: false,
+            validate: {
+                is: '(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*(\\?.*)?'
+            }
         }
+        //Relationship with user_id
     })
 }
