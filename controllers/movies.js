@@ -32,9 +32,27 @@ const controller = {
             })
     },
     getMovie: (req, res) => {
-        return res.status(200).json({
-            message: 'Not implemented'
-        })
+
+        const options = {
+            where: {
+                id: req.params.id
+            }
+        }
+
+        Movie.findOne(options).then(movie => {
+
+            if(!movie){
+                return res.status(404).json({
+                    message: "Película no existente."
+                })
+            }
+
+            return res.status(200).json(movie);
+
+        }).catch(() =>
+            res.status(500).json({
+                message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento."
+            }))
     },
     createMovie: (req, res) => {
 
