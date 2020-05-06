@@ -41,11 +41,22 @@ const checkAuthenticated = function(req, res, next) {
         })
     }
 
-    req.user = payload.sub;
+    req.user = payload;
+    next();
+}
+
+const checkAuthenticatedAdmin = function(req, res, next) {
+
+    if (req.user.role !== 1){
+        return res.status(401).json({
+            message: "Acceso no autorizado."
+        })
+    }
     next();
 }
 
 module.exports = {
     createToken: createToken,
     checkAuthenticated: checkAuthenticated,
+    checkAuthenticatedAdmin: checkAuthenticatedAdmin,
 }

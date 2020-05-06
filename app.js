@@ -7,6 +7,7 @@ const app = express();
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const movieRoutes = require('./routes/movies');
+const jwtFunctions = require('./jwt');
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -17,7 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/admin', userRoutes);
+app.use('/api/admin', [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin], userRoutes);
 app.use('/api', authRoutes);
 app.use('/api', movieRoutes);
 

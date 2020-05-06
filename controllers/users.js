@@ -54,7 +54,7 @@ const controller = {
                 message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." }))
     },
 
-    register: (req, res) => {
+    createUser: (req, res) => {
         const salt = bcrypt.genSaltSync(10);
         req.body.password = bcrypt.hashSync(req.body.password, salt)
 
@@ -76,7 +76,7 @@ const controller = {
                 return res.status(400).json({
                     message: "El usuario enviado no es válido, comprueba los campos",
                     errors
-                })
+                });
 
             }else {
                 return res.status(500).json({
@@ -84,50 +84,6 @@ const controller = {
                 })
             }
         });
-    },
-
-    login: (req, res) => {
-
-
-
-        if (!req.body.email){
-            return res.status(400).json({
-                message: "No se ha especificado un email."
-            })
-        }
-        if (!req.body.password){
-            return res.status(400).json({
-                message: "No se ha especificado una contraseña."
-            })
-        }
-
-        const options = {
-            where: {
-                email: req.body.email
-            }
-        }
-
-        User.findOne(options)
-            .then(user => {
-            if(!user){
-                return res.status(404).json({
-                    message: "Usuario no existente."
-                })
-            }
-            if (bcrypt.compareSync(req.body.password, user.password)){
-                const token = jwtFunctions.createToken(user);
-                return res.status(200).json({access_token: token});
-            }
-            else {
-                return res.status(401).json({
-                    message: "Credenciales no válidas."
-                })
-            }
-        })
-            .catch((error) => {
-                console.log(error)
-                return res.status(500).json({message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento." })
-            });
     },
 
     updateUser: (req, res) => {
