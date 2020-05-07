@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/films/:limit?', movieController.getMovies);
 
-router.get('/films/:id', movieController.getMovie);
+router.get('/film/:id', movieController.getMovie);
 
 router.post('/films',
     [
