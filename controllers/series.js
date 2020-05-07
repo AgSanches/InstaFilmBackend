@@ -3,9 +3,16 @@
 const {Serie} = require('../db')
 
 const controller = {
+
     getSerieses: (req, res) => {
 
         const options  = {
+            attributes: [
+                'id', 'title', 'releaseYear', 'director',
+                'seasons', 'episodes', 'genre',
+                'synopsis', 'cast', 'trailer',
+                'createdAt', 'updatedAt', 'image_path'
+            ],
             order: [
                 ['createdAt', "DESC"]
             ]
@@ -16,7 +23,7 @@ const controller = {
         }
 
         Serie.findAll(options)
-            .then(series => res.status(200).json(series))
+            .then(serieses => res.status(200).json(serieses))
             .catch(error => {
 
                 if(error.original.errno === 20) {
@@ -32,6 +39,12 @@ const controller = {
     getSeries: (req, res) => {
 
         const options = {
+            attributes: [
+                'id', 'title', 'releaseYear', 'director',
+                'seasons', 'episodes', 'genre',
+                'synopsis', 'cast', 'trailer',
+                'createdAt', 'updatedAt', 'image_path'
+            ],
             where: {
                 id: req.params.id
             }
