@@ -3,9 +3,16 @@
 const {Movie} = require('../db')
 
 const controller = {
+
     getMovies: (req, res) => {
 
         const options  = {
+            attributes: [
+                'id', 'title', 'releaseYear', 'director',
+                'duration', 'genre',
+                'synopsis', 'cast', 'trailer',
+                'createdAt', 'updatedAt', 'image_path'
+            ],
             order: [
                 ['createdAt', "DESC"]
             ]
@@ -32,6 +39,12 @@ const controller = {
     getMovie: (req, res) => {
 
         const options = {
+            attributes: [
+                'id', 'title', 'releaseYear', 'director',
+                'duration', 'genre',
+                'synopsis', 'cast', 'trailer',
+                'createdAt', 'updatedAt', 'image_path'
+            ],
             where: {
                 id: req.params.id
             }
