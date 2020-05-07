@@ -41,19 +41,6 @@ const controller = {
 
     login: (req, res) => {
 
-
-
-        if (!req.body.email){
-            return res.status(400).json({
-                message: "No se ha especificado un email."
-            })
-        }
-        if (!req.body.password){
-            return res.status(400).json({
-                message: "No se ha especificado una contraseña."
-            })
-        }
-
         const options = {
             where: {
                 email: req.body.email
