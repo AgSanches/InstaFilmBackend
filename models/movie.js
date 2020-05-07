@@ -24,7 +24,14 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: true,
             validate: {
-                is: '(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*(\\?.*)?'
+                isValid(value){
+                    const regex = new RegExp('(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*(\\?.*)?')
+                    if (value.length > 0){
+                        if (!regex.test(value)){
+                            throw new Error("Image enviada no es válida")
+                        }
+                    }
+                },
             }
         },
         duration: {
