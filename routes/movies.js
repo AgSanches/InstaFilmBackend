@@ -11,7 +11,7 @@ router.get('/films/:limit?', movieController.getMovies);
 
 router.get('/film/:id', movieController.getMovie);
 
-router.post('/films',
+router.post('/film',
     [
         jwtFunctions.checkAuthenticated,
         jwtFunctions.checkAuthenticatedAdmin,
@@ -28,7 +28,7 @@ router.post('/films',
     ]
     , movieController.createMovie);
 
-router.put('/films/:id',
+router.put('/film/:id',
     [
         jwtFunctions.checkAuthenticated,
         jwtFunctions.checkAuthenticatedAdmin,
@@ -42,7 +42,7 @@ router.put('/films/:id',
         check('trailer').not().isEmpty(),
     ],  movieController.updateMovie);
 
-router.delete('/films/:id',
+router.delete('/film/:id',
     [
         jwtFunctions.checkAuthenticated,
         jwtFunctions.checkAuthenticatedAdmin
