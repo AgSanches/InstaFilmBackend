@@ -7,7 +7,7 @@ const checkErrors = require('./validation');
 const seriesController = require('../controllers/series');
 const router = express.Router();
 
-router.get('/series/:limit?',
+router.get('/serieses/:limit?',
     [
         jwtFunctions.checkAuthenticated,
         jwtFunctions.checkAuthenticatedAdmin
