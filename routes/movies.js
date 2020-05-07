@@ -7,13 +7,54 @@ const checkErrors = require('./validation');
 const movieController = require('../controllers/movies');
 const router = express.Router();
 
-router.get('/films/:limit?',[jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin] ,movieController.getMovies);
-router.get('/films/:id',[jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin]  ,movieController.getMovie);
+router.get('/films/:limit?',
+    [
+        jwtFunctions.checkAuthenticated,
+        jwtFunctions.checkAuthenticatedAdmin
+    ] , movieController.getMovies);
+
+router.get('/films/:id',
+    [
+        jwtFunctions.checkAuthenticated,
+        jwtFunctions.checkAuthenticatedAdmin
+    ]  ,movieController.getMovie);
+
 router.post('/films',
-    [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin, jwtFunctions.setUserId]
-    ,movieController.createMovie);
-router.put('/films/:id', [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin], movieController.updateMovie);
-router.delete('/films/:id', [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin], movieController.deleteMovie);
+    [
+        jwtFunctions.checkAuthenticated,
+        jwtFunctions.checkAuthenticatedAdmin,
+        check('title').not().isEmpty(),
+        check('releaseYear').not().isEmpty(),
+        check('director').not().isEmpty(),
+        check('duration').not().isEmpty(),
+        check('genre').not().isEmpty(),
+        check('synopsis').not().isEmpty(),
+        check('cast').not().isEmpty(),
+        check('trailer').not().isEmpty(),
+        checkErrors,
+        jwtFunctions.setUserId,
+    ]
+    , movieController.createMovie);
+
+router.put('/films/:id',
+    [
+        jwtFunctions.checkAuthenticated,
+        jwtFunctions.checkAuthenticatedAdmin,
+        check('title').not().isEmpty(),
+        check('releaseYear').not().isEmpty(),
+        check('director').not().isEmpty(),
+        check('duration').not().isEmpty(),
+        check('genre').not().isEmpty(),
+        check('synopsis').not().isEmpty(),
+        check('cast').not().isEmpty(),
+        check('trailer').not().isEmpty(),
+    ],  movieController.updateMovie);
+
+router.delete('/films/:id',
+    [
+        jwtFunctions.checkAuthenticated,
+        jwtFunctions.checkAuthenticatedAdmin
+    ],  movieController.deleteMovie);
 
 
 module.exports = router;
