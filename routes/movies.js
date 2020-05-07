@@ -7,11 +7,13 @@ const checkErrors = require('./validation');
 const movieController = require('../controllers/movies');
 const router = express.Router();
 
-router.get('/movies/:limit?', movieController.getMovies);
-router.get('/movie/:id', movieController.getMovie);
-router.post('/movie', movieController.createMovie);
-router.put('/movie/:id', movieController.updateMovie);
-router.delete('/movie/:id', movieController.deleteMovie);
+router.get('/films/:limit?',[jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin] ,movieController.getMovies);
+router.get('/films/:id',[jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin]  ,movieController.getMovie);
+router.post('/films',
+    [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin, jwtFunctions.setUserId]
+    ,movieController.createMovie);
+router.put('/films/:id', [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin], movieController.updateMovie);
+router.delete('/films/:id', [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin], movieController.deleteMovie);
 
 
 module.exports = router;

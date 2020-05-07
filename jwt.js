@@ -46,7 +46,6 @@ const checkAuthenticated = function(req, res, next) {
 }
 
 const checkAuthenticatedAdmin = function(req, res, next) {
-
     if (req.user.role !== 1){
         return res.status(401).json({
             message: "Acceso no autorizado."
@@ -55,8 +54,14 @@ const checkAuthenticatedAdmin = function(req, res, next) {
     next();
 }
 
+const setUserId = (req, res, next) => {
+    req.body.userId = req.user.sub;
+    next();
+}
+
 module.exports = {
     createToken: createToken,
     checkAuthenticated: checkAuthenticated,
     checkAuthenticatedAdmin: checkAuthenticatedAdmin,
+    setUserId: setUserId,
 }

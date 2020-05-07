@@ -18,7 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/admin', [jwtFunctions.checkAuthenticated, jwtFunctions.checkAuthenticatedAdmin], userRoutes);
+app.use('/api/admin', userRoutes);
 app.use('/api', authRoutes);
 app.use('/api', movieRoutes);
 
