@@ -7,17 +7,9 @@ const checkErrors = require('./validation');
 const seriesController = require('../controllers/series');
 const router = express.Router();
 
-router.get('/serieses/:limit?',
-    [
-        jwtFunctions.checkAuthenticated,
-        jwtFunctions.checkAuthenticatedAdmin
-    ] , seriesController.getSerieses);
+router.get('/serieses/:limit?', seriesController.getSerieses);
 
-router.get('/series/:id',
-    [
-        jwtFunctions.checkAuthenticated,
-        jwtFunctions.checkAuthenticatedAdmin
-    ]  ,seriesController.getSeries);
+router.get('/series/:id', seriesController.getSeries);
 
 router.post('/series',
     [

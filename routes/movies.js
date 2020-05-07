@@ -7,17 +7,9 @@ const checkErrors = require('./validation');
 const movieController = require('../controllers/movies');
 const router = express.Router();
 
-router.get('/films/:limit?',
-    [
-        jwtFunctions.checkAuthenticated,
-        jwtFunctions.checkAuthenticatedAdmin
-    ] , movieController.getMovies);
+router.get('/films/:limit?', movieController.getMovies);
 
-router.get('/films/:id',
-    [
-        jwtFunctions.checkAuthenticated,
-        jwtFunctions.checkAuthenticatedAdmin
-    ]  ,movieController.getMovie);
+router.get('/films/:id', movieController.getMovie);
 
 router.post('/films',
     [
