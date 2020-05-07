@@ -1,8 +1,6 @@
 'use strict'
 
-const bcrypt = require('bcrypt');
-const jwtFunctions = require('../jwt');
-const {Movie, Sequelize} = require('../db')
+const {Movie} = require('../db')
 
 const controller = {
     getMovies: (req, res) => {
