@@ -55,6 +55,7 @@ const controller = {
             }))
     },
     createMovie: (req, res) => {
+
         Movie.create(req.body)
             .then(movie => {
                 return res.status(201).json({
