@@ -74,6 +74,10 @@ const controller = {
                         errors
                     })
 
+                } else if (error.parent.errno && error.parent.errno === 19){
+                    return res.status(404).json({
+                        message: "El usuario proporcionado no existente."
+                    })
                 } else {
                     return res.status(500).json({
                         message: "Ha ocurrido un error al crear la serie, vuelva a intentarlo en otro momento."
