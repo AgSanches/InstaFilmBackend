@@ -26,7 +26,7 @@ module.exports = (sequelize, type) => {
             validate: {
                 isValid(value){
                     const regex = new RegExp('(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*(\\?.*)?')
-                    if (value.length > 0){
+                    if (value && value.length > 0){
                         if (!regex.test(value)){
                             throw new Error("Image enviada no es válida")
                         }
