@@ -8,7 +8,8 @@ const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const movieRoutes = require('./routes/movies');
 const seriesRoutes = require('./routes/series');
-const landingRoutes = require('./routes/landing')
+const landingRoutes = require('./routes/landing');
+const commentSeriesRoutes = require('./routes/comment-series');
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -24,5 +25,6 @@ app.use('/api', authRoutes);
 app.use('/api', movieRoutes);
 app.use('/api', seriesRoutes);
 app.use('/api', landingRoutes);
+app.use('/api', commentSeriesRoutes);
 
 module.exports = app;
