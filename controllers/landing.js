@@ -38,7 +38,6 @@ const landingController = {
     },
     getLandingMovieLatest: (req, res) => {
 
-        //TODO: When Series have valoration, sort by them.
         const options  = {
             attributes: [
                 'id', 'title', 'releaseYear', 'image_path'
@@ -69,6 +68,7 @@ const landingController = {
     },
     getLandingSeriePopular: (req, res) => {
 
+        //TODO: When Series have valoration, sort by them.
         const options  = {
             attributes: [
                 'id', 'title', 'releaseYear', 'image_path'
@@ -99,9 +99,33 @@ const landingController = {
     },
     getLandingSerieLatest: (req, res) => {
 
-        return res.status(200).json({
-            "status": "Not implemented"
-        });
+        const options  = {
+            attributes: [
+                'id', 'title', 'releaseYear', 'image_path'
+            ],
+            order: [
+                ['createdAt', "DESC"]
+            ],
+            limit: 15
+        }
+
+        if (req.params.limit){
+            options.limit = req.params.limit;
+        }
+
+        Serie.findAll(options)
+            .then(serieses => res.status(200).json(serieses))
+            .catch(error => {
+
+                if(error.original.errno === 20) {
+                    return res.status(400).json({
+                        message: "El parámetro limit proporcionado no es válido, el valor debe ser un número."
+                    });
+                }
+                return res.status(500).json({
+                    message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento."
+                })
+            })
     },
 }
 
