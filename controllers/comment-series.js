@@ -40,31 +40,34 @@ const commentsController = {
 
     deleteComment: (req, res) => {
 
-        if (req.user.role === 1){
-            CommentSerie.destroy({
-                where: {
-                    id: req.params.id
-                }
-            })
-                .then((log) => {
-                    if (log === 1){
-                        return res.status(200).json({
-                            message: "Comentario eliminado."
-                        })
-                    } else {
-                        return res.status(404).json({
-                            message: "Comentario no existente."
-                        })
-                    }
-
-                })
-                .catch(() => {
-                    return res.status(500).json({
-                        message: "Ha ocurrido un error al eliminar el comentario, vuelva a intentarlo en otro momento"
-                    })
-                });
+        const options = {
+            where: {
+                id: req.params.id,
+            }
         }
 
+        if (req.user.role !== 1){
+            options.where.userId = req.user.sub;
+        }
+
+        CommentSerie.destroy(options)
+            .then((log) => {
+                if (log === 1){
+                    return res.status(200).json({
+                        message: "Comentario eliminado."
+                    })
+                } else {
+                    return res.status(404).json({
+                        message: "Comentario no existente."
+                    })
+                }
+
+            })
+            .catch(() => {
+                return res.status(500).json({
+                    message: "Ha ocurrido un error al eliminar el comentario, vuelva a intentarlo en otro momento"
+                })
+            });
     }
 
 }
