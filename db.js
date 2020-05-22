@@ -49,7 +49,7 @@ Serie.hasMany(CommentSerie, {
 });
 
 CommentSerie.belongsTo(Serie, {
-
+    constraints: false
 });
 
 sequelize.sync()
@@ -61,5 +61,6 @@ module.exports = {
     User,
     Movie,
     Serie,
+    CommentSerie,
     Sequelize
 }
