@@ -1,6 +1,7 @@
 'use strict'
 
-const {Serie} = require('../db')
+const {Serie} = require('../db');
+const {CommentSerie} = require('../db')
 
 const controller = {
 
@@ -15,6 +16,9 @@ const controller = {
             ],
             order: [
                 ['createdAt', "DESC"]
+            ],
+            include: [
+                CommentSerie
             ]
         }
 
@@ -47,7 +51,10 @@ const controller = {
             ],
             where: {
                 id: req.params.id
-            }
+            },
+            include: [
+                CommentSerie
+            ]
         }
 
         Serie.findOne(options).then(serie => {
