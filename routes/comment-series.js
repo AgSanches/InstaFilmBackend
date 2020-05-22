@@ -15,6 +15,9 @@ router.post('/series/create-comment', [
     jwtFunctions.setUserId
 ], commentSeries.createComment);
 
+router.delete('/series/comment/:id', [
+    jwtFunctions.checkAuthenticated
+], commentSeries.deleteComment);
 
 
 module.exports = router;
