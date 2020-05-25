@@ -38,7 +38,6 @@ const controller = {
                 }
             });
     },
-
     login: (req, res) => {
 
         const options = {

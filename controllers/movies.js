@@ -1,6 +1,7 @@
 'use strict'
 
-const {Movie} = require('../db')
+const {Movie} = require('../db');
+const {CommentMovie} = require('../db');
 
 const controller = {
 
@@ -15,6 +16,9 @@ const controller = {
             ],
             order: [
                 ['createdAt', "DESC"]
+            ],
+            include: [
+                CommentMovie
             ]
         }
 
@@ -26,7 +30,7 @@ const controller = {
             .then(movies => res.status(200).json(movies))
             .catch(error => {
 
-                if(error.original.errno === 20) {
+                if(error.original && error.original.errno === 20) {
                     return res.status(400).json({
                         message: "El parámetro limit proporcionado no es válido, el valor debe ser un número."
                     });
@@ -47,7 +51,10 @@ const controller = {
             ],
             where: {
                 id: req.params.id
-            }
+            },
+            include: [
+                CommentMovie
+            ]
         }
 
         Movie.findOne(options).then(movie => {
