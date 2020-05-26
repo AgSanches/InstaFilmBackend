@@ -4,6 +4,7 @@ const MovieModel = require('./models/movie');
 const SeriesModel = require('./models/series');
 const CommentsSeries = require('./models/comment-series');
 const CommentsMovies = require('./models/comment-movies');
+const FavoritesMovies = require('./models/favorites-movies');
 
 const sequelize = new Sequelize({
     database: 'instafilm',
@@ -18,6 +19,7 @@ const Movie = MovieModel(sequelize, Sequelize);
 const Serie = SeriesModel(sequelize, Sequelize);
 const CommentSerie = CommentsSeries(sequelize, Sequelize);
 const CommentMovie = CommentsMovies(sequelize, Sequelize);
+const FavoriteMovie = FavoritesMovies(sequelize, Sequelize);
 
 User.hasMany(Movie, {
     onDelete: 'RESTRICT',
@@ -74,6 +76,29 @@ CommentMovie.belongsTo(Movie, {
     foreignKeyConstraint: true
 });
 
+/**
+ * Films Favorites
+ */
+User.hasMany(FavoriteMovie, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+
+Movie.hasMany(FavoriteMovie, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    foreignKey: 'filmId',
+});
+
+FavoriteMovie.belongsTo(Movie, {
+    foreignKey: 'filmId',
+    foreignKeyConstraint: true
+});
+
+FavoriteMovie.belongsTo(User, {
+    foreignKeyConstraint: true
+});
+
 sequelize.sync()
     .then(() => {
         console.log(`Database & tables created!`)
@@ -85,5 +110,6 @@ module.exports = {
     Serie,
     CommentSerie,
     CommentMovie,
+    FavoriteMovie,
     Sequelize
 }
