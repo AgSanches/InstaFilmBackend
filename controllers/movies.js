@@ -21,12 +21,13 @@ const controller = {
             include: [
                 {
                     model: CommentMovie,
-                    as: "comments"
+                    as: "comments",
                 },
                 {
                     model: FavoriteMovie,
                     as: "favorites"
                 },
+
 
             ]
         }
