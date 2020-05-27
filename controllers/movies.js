@@ -2,6 +2,7 @@
 
 const {Movie} = require('../db');
 const {CommentMovie} = require('../db');
+const {FavoriteMovie} = require('../db');
 
 const controller = {
 
@@ -18,7 +19,8 @@ const controller = {
                 ['createdAt', "DESC"]
             ],
             include: [
-                CommentMovie
+                CommentMovie,
+                FavoriteMovie
             ]
         }
 
@@ -53,7 +55,12 @@ const controller = {
                 id: req.params.id
             },
             include: [
-                CommentMovie
+                CommentMovie,
+                {
+                    model: FavoriteMovie,
+                    attributes: ["userId", "id"]
+                }
+
             ]
         }
 

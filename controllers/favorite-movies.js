@@ -1,6 +1,7 @@
 'use strict'
 
-const {FavoriteMovie} = require('../db')
+const {FavoriteMovie} = require('../db');
+const {Movie} = require('../db');
 
 const favoriteController = {
 
@@ -61,6 +62,38 @@ const favoriteController = {
                     message: "Ha ocurrido un error al eliminar el favorito, vuelva a intentarlo en otro momento"
                 })
             });
+    },
+
+    getFavoritesMovies: (req, res) => {
+
+        const options = {
+            order: [
+                ['createdAt', "DESC"]
+            ],
+            include: [
+                {
+                    model: FavoriteMovie,
+                    attributes: ["id"],
+                    where: {
+                        userId: req.body.userId
+                    },
+                }
+            ]
+        }
+
+        Movie.findAll(options)
+            .then(favorites => res.status(200).json(favorites))
+            .catch(error => {
+
+                if(error.original && error.original.errno === 20) {
+                    return res.status(400).json({
+                        message: "El parámetro limit proporcionado no es válido, el valor debe ser un número."
+                    });
+                }
+                return res.status(500).json({
+                    message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento."
+                })
+            })
     }
 
 }

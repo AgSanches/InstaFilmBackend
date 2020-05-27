@@ -18,5 +18,10 @@ router.delete('/films/favorite/:id', [
     jwtFunctions.checkAuthenticated
 ], favoriteController.deleteFavorite);
 
+router.get('/films-user-favorites', [
+    jwtFunctions.checkAuthenticated,
+    jwtFunctions.setUserId
+], favoriteController.getFavoritesMovies);
+
 
 module.exports = router;
