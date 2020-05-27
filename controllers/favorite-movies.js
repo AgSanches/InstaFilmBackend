@@ -77,6 +77,7 @@ const favoriteController = {
                     where: {
                         userId: req.body.userId
                     },
+                    as: "favorites"
                 }
             ]
         }

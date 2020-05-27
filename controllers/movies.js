@@ -19,8 +19,15 @@ const controller = {
                 ['createdAt', "DESC"]
             ],
             include: [
-                CommentMovie,
-                FavoriteMovie
+                {
+                    model: CommentMovie,
+                    as: "comments"
+                },
+                {
+                    model: FavoriteMovie,
+                    as: "favorites"
+                },
+
             ]
         }
 
@@ -55,10 +62,14 @@ const controller = {
                 id: req.params.id
             },
             include: [
-                CommentMovie,
+                {
+                    model: CommentMovie,
+                    as: "comments"
+                },
                 {
                     model: FavoriteMovie,
-                    attributes: ["userId", "id"]
+                    attributes: ["userId", "id"],
+                    as: "favorites"
                 }
 
             ]
@@ -75,6 +86,7 @@ const controller = {
             return res.status(200).json(movie);
 
         }).catch(() =>
+
             res.status(500).json({
                 message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento."
             }))

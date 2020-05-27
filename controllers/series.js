@@ -18,7 +18,10 @@ const controller = {
                 ['createdAt', "DESC"]
             ],
             include: [
-                CommentSerie
+                {
+                    model:CommentSerie,
+                    as: "comments"
+                }
             ]
         }
 
@@ -53,7 +56,10 @@ const controller = {
                 id: req.params.id
             },
             include: [
-                CommentSerie
+                {
+                    model:CommentSerie,
+                    as: "comments"
+                }
             ]
         }
 

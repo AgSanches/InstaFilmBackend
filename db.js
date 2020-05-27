@@ -4,6 +4,7 @@ const MovieModel = require('./models/movie');
 const SeriesModel = require('./models/series');
 const CommentsSeries = require('./models/comment-series');
 const CommentsMovies = require('./models/comment-movies');
+const FavoriteSeries = require('./models/favorites-series');
 const FavoritesMovies = require('./models/favorites-movies');
 
 const sequelize = new Sequelize({
@@ -19,6 +20,7 @@ const Movie = MovieModel(sequelize, Sequelize);
 const Serie = SeriesModel(sequelize, Sequelize);
 const CommentSerie = CommentsSeries(sequelize, Sequelize);
 const CommentMovie = CommentsMovies(sequelize, Sequelize);
+const FavoriteSerie = FavoriteSeries(sequelize, Sequelize);
 const FavoriteMovie = FavoritesMovies(sequelize, Sequelize);
 
 User.hasMany(Movie, {
@@ -49,7 +51,8 @@ User.hasMany(CommentSerie, {
 
 Serie.hasMany(CommentSerie, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onUpdate: 'CASCADE',
+    as: "comments"
 });
 
 CommentSerie.belongsTo(Serie, {
@@ -69,6 +72,7 @@ Movie.hasMany(CommentMovie, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     foreignKey: 'filmId',
+    as: "comments"
 });
 
 CommentMovie.belongsTo(Movie, {
@@ -88,6 +92,7 @@ Movie.hasMany(FavoriteMovie, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     foreignKey: 'filmId',
+    as: "favorites"
 });
 
 FavoriteMovie.belongsTo(Movie, {
@@ -96,6 +101,28 @@ FavoriteMovie.belongsTo(Movie, {
 });
 
 FavoriteMovie.belongsTo(User, {
+    foreignKeyConstraint: true
+});
+
+/**
+ * Series Favorites
+ */
+User.hasMany(FavoriteMovie, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+
+Serie.hasMany(FavoriteSerie, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: "favorites"
+});
+
+FavoriteSerie.belongsTo(Serie, {
+    foreignKeyConstraint: true
+});
+
+FavoriteSerie.belongsTo(User, {
     foreignKeyConstraint: true
 });
 
@@ -110,6 +137,7 @@ module.exports = {
     Serie,
     CommentSerie,
     CommentMovie,
+    FavoriteSerie,
     FavoriteMovie,
     Sequelize
 }
