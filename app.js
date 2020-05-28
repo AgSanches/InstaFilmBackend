@@ -11,7 +11,9 @@ const seriesRoutes = require('./routes/series');
 const landingRoutes = require('./routes/landing');
 const commentSeriesRoutes = require('./routes/comment-series');
 const commentMoviesRoutes = require('./routes/comment-movies');
+const favoritesSeriesRoutes = require('./routes/favorites-series');
 const favoritesMoviesRoutes = require('./routes/favorites-movies');
+
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -30,5 +32,6 @@ app.use('/api', landingRoutes);
 app.use('/api', commentSeriesRoutes);
 app.use('/api', commentMoviesRoutes);
 app.use('/api', favoritesMoviesRoutes);
+app.use('/api', favoritesSeriesRoutes);
 
 module.exports = app;

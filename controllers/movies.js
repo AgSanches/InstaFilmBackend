@@ -16,7 +16,15 @@ const controller = {
                 'createdAt', 'updatedAt', 'image_path'
             ],
             order: [
-                ['createdAt', "DESC"]
+                ['createdAt', "DESC"],
+                [
+                    {
+                        model:CommentMovie,
+                        as: "comments"
+                    },
+                    "createdAt",
+                    "DESC"
+                ]
             ],
             include: [
                 {
@@ -73,6 +81,16 @@ const controller = {
                     as: "favorites"
                 }
 
+            ],
+            order: [
+                [
+                    {
+                        model:CommentMovie,
+                        as: "comments"
+                    },
+                    "createdAt",
+                    "DESC"
+                ]
             ]
         }
 

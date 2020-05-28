@@ -1,27 +1,29 @@
 'use strict'
 
-const {FavoriteMovie} = require('../db');
-const {Movie} = require('../db');
+const {FavoriteSerie} = require('../db');
+const {Serie} = require('../db');
 
 const favoriteController = {
 
     addFavorite: (req, res) => {
 
-        FavoriteMovie.create(req.body)
+        FavoriteSerie.create(req.body)
             .then(favorite => {
-                return res.status(201).json(favorite);
+                return res.status(201).json({
+                    favorite: favorite
+                });
             })
             .catch(error => {
 
                 if (error.parent.errno && error.parent.errno === 19){
                     if (error.errors && error.errors[0].validatorKey === "not_unique"){
                         return res.status(400).json({
-                            message: "El usuario ya le ha dado me gusta a esta pelicula."
+                            message: "El usuario ya le ha dado me gusta a esta serie."
                         })
                     }
                     else {
                         return res.status(404).json({
-                            message: "La película no existe."
+                            message: "La serie no existe."
                         })
                     }
 
@@ -42,7 +44,7 @@ const favoriteController = {
             }
         }
 
-        FavoriteMovie.destroy(options)
+        FavoriteSerie.destroy(options)
             .then((log) => {
                 if (log === 1){
                     return res.status(200).json({
@@ -62,7 +64,7 @@ const favoriteController = {
             });
     },
 
-    getFavoritesMovies: (req, res) => {
+    getFavoritesSeries: (req, res) => {
 
         const options = {
             order: [
@@ -70,7 +72,7 @@ const favoriteController = {
             ],
             include: [
                 {
-                    model: FavoriteMovie,
+                    model: FavoriteSerie,
                     attributes: ["id"],
                     where: {
                         userId: req.body.userId
@@ -80,8 +82,8 @@ const favoriteController = {
             ]
         }
 
-        Movie.findAll(options)
-            .then(movies => res.status(200).json(movies))
+        Serie.findAll(options)
+            .then(series => res.status(200).json(series))
             .catch(() => {
                 return res.status(500).json({
                     message: "Ha ocurrido un problema, vuelva a intentarlo en otro momento."

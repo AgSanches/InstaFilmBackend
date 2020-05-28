@@ -1,7 +1,8 @@
 'use strict'
 
 const {Serie} = require('../db');
-const {CommentSerie} = require('../db')
+const {CommentSerie} = require('../db');
+const {FavoriteSerie} = require('../db');
 
 const controller = {
 
@@ -15,13 +16,25 @@ const controller = {
                 'createdAt', 'updatedAt', 'image_path'
             ],
             order: [
-                ['createdAt', "DESC"]
+                ['createdAt', "DESC"],
+                [
+                    {
+                        model:CommentSerie,
+                        as: "comments"
+                    },
+                    "createdAt",
+                    "DESC"
+                ]
             ],
             include: [
                 {
                     model:CommentSerie,
                     as: "comments"
-                }
+                },
+                {
+                    model: FavoriteSerie,
+                    as: "favorites"
+                },
             ]
         }
 
@@ -59,7 +72,21 @@ const controller = {
                 {
                     model:CommentSerie,
                     as: "comments"
-                }
+                },
+                {
+                    model: FavoriteSerie,
+                    as: "favorites"
+                },
+            ],
+            order: [
+                [
+                    {
+                        model:CommentSerie,
+                        as: "comments"
+                    },
+                    "createdAt",
+                    "DESC"
+                ]
             ]
         }
 

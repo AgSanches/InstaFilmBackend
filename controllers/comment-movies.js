@@ -8,9 +8,7 @@ const commentsController = {
 
         CommentMovie.create(req.body)
             .then(comment => {
-                return res.status(201).json({
-                    comment: comment
-                });
+                return res.status(201).json(comment);
             })
             .catch(error => {
 
