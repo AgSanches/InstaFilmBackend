@@ -39,7 +39,7 @@ const favoriteController = {
 
         const options = {
             where: {
-                id: req.params.id,
+                seriesId: req.params.id,
                 userId: req.user.sub
             }
         }
@@ -52,7 +52,7 @@ const favoriteController = {
                     })
                 } else {
                     return res.status(404).json({
-                        message: "Campo no existente."
+                        message: "Este usuario no le ha dado me gusta a esta serie."
                     })
                 }
 
